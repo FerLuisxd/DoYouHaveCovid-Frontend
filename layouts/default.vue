@@ -1,8 +1,32 @@
 <template>
   <div>
-    <nuxt />
+           <router-link  text to="/">        
+        <el-button>Main Page</el-button>
+        </router-link >
+
+          <router-link to="/check"  >
+        <el-button>Check</el-button>
+          </router-link >
+        <nuxt />
+
   </div>
 </template>
+
+
+<script>
+// import appHeader from "@/components/header";
+export default {
+  // components: { appHeader },
+  // computed: {
+  //   username() {
+  //     return this.$auth.user.username;
+  //   },
+  //   logged() {
+  //     return this.$auth.loggedIn;
+  //   }
+  // }
+};
+</script>
 
 <style>
 html {

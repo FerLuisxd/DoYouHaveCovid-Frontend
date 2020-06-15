@@ -1,14 +1,13 @@
 <template>
   <div class="container">
     <div>
-      <logo />
       <h1 class="title">
         ConcurrenteWeb
       </h1>
       <h2 class="subtitle">
         My excellent Nuxt.js project
       </h2>
-      <div class="links">
+      <!-- <div class="links">
         <a
           href="https://nuxtjs.org/"
           target="_blank"
@@ -23,17 +22,17 @@
         >
           GitHub
         </a>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+// import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
-    Logo
+    // Logo
   }
 }
 </script>

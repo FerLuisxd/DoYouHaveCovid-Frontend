@@ -2,10 +2,10 @@
   <div class="container">
     <div>
       <h1 class="title">
-        ConcurrenteWeb
+        Do You Have Covid?
       </h1>
       <h2 class="subtitle">
-        My excellent Nuxt.js project
+        UPC
       </h2>
       <!-- <div class="links">
         <a

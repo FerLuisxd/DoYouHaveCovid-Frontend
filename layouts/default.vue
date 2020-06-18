@@ -1,9 +1,8 @@
 <template>
   <div>
-           <router-link  text to="/">        
+      <router-link  text to="/">        
         <el-button>Main Page</el-button>
         </router-link >
-
           <router-link to="/check"  >
         <el-button>Check</el-button>
           </router-link >

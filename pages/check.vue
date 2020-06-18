@@ -32,7 +32,7 @@
         <el-form-item label="Contacto con alguien con Covid?">
           <el-select v-model="form.contact" placeholder="Selecciona una opcion">
             <el-option label="Si" value="1"></el-option>
-            <el-option label="Nose" value="0.5"></el-option>
+            <el-option label="No estoy seguro" value="0.5"></el-option>
             <el-option label="No" value="0"></el-option>
           </el-select>
         </el-form-item>
@@ -87,50 +87,51 @@ export default {
   },
   methods: {
     onSubmit() {
+      let requestBody = JSON.parse(JSON.stringify(this.form))
       if (
-        !this.form.fever &&
-        !this.form.tiredness &&
-        !this.form.difficulty_in_Breathing
+        !requestBody.fever &&
+        !requestBody.tiredness &&
+        !requestBody.difficulty_in_Breathing
       )
-        this.form.none_Sympton = true;
+        requestBody.none_Sympton = true;
       if (
-        !this.form.sore_Throat &&
-        !this.form.pains &&
-        !this.form.nasal_Congestion &&
-        !this.form.diarrhea
+        !requestBody.sore_Throat &&
+        !requestBody.pains &&
+        !requestBody.nasal_Congestion &&
+        !requestBody.diarrhea
       )
-        this.form.none_Experiencing = true;
+        requestBody.none_Experiencing = true;
 
-      this.form.fever= new Number(this.form.fever)
-      this.form.tiredness= new Number(this.form.tiredness)
-      this.form.dry_Cough= new Number(this.form.dry_Cough)
-      this.form.difficulty_in_Breathing= new Number(this.form.difficulty_in_Breathing)
-      this.form.none_Sympton= new Number(this.form.none_Sympton)
-      this.form.sore_Throat= new Number(this.form.sore_Throat)
-      this.form.pains= new Number(this.form.pains)
-      this.form.nasal_Congestion= new Number(this.form.nasal_Congestion)
-      this.form.diarrhea= new Number(this.form.diarrhea)
-      this.form.none_Experiencing= new Number(this.form.none_Experiencing)
-      this.form.runny_Nose= new Number(this.form.runny_Nose)
+      requestBody.fever= new Number(requestBody.fever)
+      requestBody.tiredness= new Number(requestBody.tiredness)
+      requestBody.dry_Cough= new Number(requestBody.dry_Cough)
+      requestBody.difficulty_in_Breathing= new Number(requestBody.difficulty_in_Breathing)
+      requestBody.none_Sympton= new Number(requestBody.none_Sympton)
+      requestBody.sore_Throat= new Number(requestBody.sore_Throat)
+      requestBody.pains= new Number(requestBody.pains)
+      requestBody.nasal_Congestion= new Number(requestBody.nasal_Congestion)
+      requestBody.diarrhea= new Number(requestBody.diarrhea)
+      requestBody.none_Experiencing= new Number(requestBody.none_Experiencing)
+      requestBody.runny_Nose= new Number(requestBody.runny_Nose)
 
 
-      this.form.age = new Number(this.form.age);
-      this.form.gender = new Number(this.form.gender);
-      this.form.contact = new Number(this.form.contact);
-      console.log("age", this.form.age);
-      console.log("submit!", this.form);
-      let request = new Request("http://localhost:8000/knn", {
+      requestBody.age = new Number(requestBody.age);
+      requestBody.gender = new Number(requestBody.gender);
+      requestBody.contact = new Number(requestBody.contact);
+      console.log("age", requestBody.age);
+      console.log("submit!", requestBody);
+      let request = new Request("http://localhost:4000/api/neuronal/v2", {
         method: "POST",
         mode: "cors",
-        body: JSON.stringify(this.form)
+        body: JSON.stringify(requestBody)
       });
       fetch(request)
         .then(res => res.json())
         .then(prediction => {
           // this.$swal(JSON.stringify(prediction));
           this.$swal({
-            title: prediction.predicted ? "Predecido!" : "No Predecido",
-            text: "Prediccion " + prediction.knn,
+            title: "Prediccion",
+            text: "Nivel de gravedad de covid " + prediction.knn,
             type: "success"
           });
         });

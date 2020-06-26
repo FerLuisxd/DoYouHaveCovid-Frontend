@@ -36,6 +36,15 @@
             <el-option label="No" value="0"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="(Opcional) Nivel de Covid?">
+          <el-select v-model="form.severity" placeholder="Selecciona una opcion">
+            <el-option label="Grave" value="1"></el-option>
+            <el-option label="Moderado" value="0.6"></el-option>
+            <el-option label="Leve" value="0.3"></el-option>
+            <el-option label="No tengo" value="0"></el-option>
+            <el-option label="No se" value=null></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="Genero">
           <el-select v-model="form.gender" placeholder="Selecciona tu genero">
             <el-option label="Masculino" value="1"></el-option>
@@ -80,14 +89,16 @@ export default {
         runny_Nose: false,
         age: null,
         gender: 0,
-        severity: 0,
-        contact: null
+        severity: null,
+        contact: null,
       }
     };
   },
   methods: {
     onSubmit() {
       let requestBody = JSON.parse(JSON.stringify(this.form))
+      let urlRequest = requestBody.severity != "null" ? "http://localhost:8000/knn" : "http://localhost:8000/knn/without"
+      console.log(urlRequest, requestBody.severity, requestBody.severity != null)
       if (
         !requestBody.fever &&
         !requestBody.tiredness &&
@@ -113,6 +124,7 @@ export default {
       requestBody.diarrhea= new Number(requestBody.diarrhea)
       requestBody.none_Experiencing= new Number(requestBody.none_Experiencing)
       requestBody.runny_Nose= new Number(requestBody.runny_Nose)
+      requestBody.severity= requestBody.severity ? new Number(requestBody.severity) : null
 
 
       requestBody.age = new Number(requestBody.age);
@@ -120,7 +132,7 @@ export default {
       requestBody.contact = new Number(requestBody.contact);
       console.log("age", requestBody.age);
       console.log("submit!", requestBody);
-      let request = new Request("http://localhost:4000/api/neuronal/v2", {
+      let request = new Request(urlRequest, {
         method: "POST",
         mode: "cors",
         body: JSON.stringify(requestBody)
@@ -129,9 +141,24 @@ export default {
         .then(res => res.json())
         .then(prediction => {
           // this.$swal(JSON.stringify(prediction));
+          let nivel = ""
+          switch (prediction.knn) {
+            case 3:
+              nivel = "Leve"
+              break;
+            case 6:
+              nivel = "Moderado"
+              break;
+            case 10:
+              nivel = "Grave"
+              break;
+            case 0:
+              nivel = "Sin gravedad"
+              break;
+          }
           this.$swal({
             title: "Prediccion",
-            text: "Nivel de gravedad de covid " + prediction.knn,
+            text: "Nivel de gravedad de covid: " + nivel,
             type: "success"
           });
         });

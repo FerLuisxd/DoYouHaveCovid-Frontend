@@ -6,6 +6,9 @@
           <router-link to="/check"  >
         <el-button>Check</el-button>
           </router-link >
+                  <router-link to="/navigate"  >
+        <el-button>Navigate</el-button>
+        </router-link >
         <nuxt />
 
   </div>
